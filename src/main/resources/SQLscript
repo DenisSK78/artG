@@ -1,0 +1,259 @@
+CREATE SCHEMA if NOT EXISTS gallery CHARACTER SET utf8 COLLATE utf8_general_ci;
+
+USE gallery;
+
+CREATE TABLE IF NOT EXISTS users (
+  id BIGINT AUTO_INCREMENT,
+  first_name VARCHAR(30),
+  surname VARCHAR(30),
+  email VARCHAR(50) NOT NULL UNIQUE,
+  password VARCHAR(50) NOT NULL,
+  role VARCHAR(20) NOT NULL DEFAULT "GUEST",
+  status VARCHAR(20) NOT NULL DEFAULT "OK",
+  birthday TIMESTAMP NULL DEFAULT NULL,
+  gender VARCHAR(6) NOT NULL,
+  PRIMARY KEY (id));
+
+CREATE TABLE IF NOT EXISTS address(
+  id BIGINT AUTO_INCREMENT,
+  country VARCHAR(30),
+  city VARCHAR(30),
+  street VARCHAR(30),
+  house VARCHAR(5),
+  building VARCHAR(5),
+  flat VARCHAR(5),
+  phone VARCHAR(20),
+  postcode VARCHAR(10),
+  user_id BIGINT,
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_id) REFERENCES users(id));
+
+CREATE TABLE IF NOT EXISTS author (
+  id BIGINT AUTO_INCREMENT,
+  alias VARCHAR (100),
+  user_id BIGINT NOT NULL,
+  contract VARCHAR (100),
+  biography VARCHAR(255),
+  date_contract TIMESTAMP NULL DEFAULT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_id) REFERENCES users(id));
+
+CREATE TABLE IF NOT EXISTS material(
+  id BIGINT AUTO_INCREMENT,
+  name_material VARCHAR(50),
+  description_material VARCHAR(255),
+  PRIMARY KEY (id));
+
+CREATE TABLE IF NOT EXISTS form_art(
+  id BIGINT AUTO_INCREMENT,
+  name_form_art VARCHAR(50),
+  description_form_art VARCHAR(255),
+  PRIMARY KEY (id));
+
+CREATE TABLE IF NOT EXISTS art_object (
+  id BIGINT AUTO_INCREMENT,
+  object_name VARCHAR(50),
+  description_object VARCHAR(255),
+  date_creation TIMESTAMP NULL DEFAULT NULL,
+  object_info VARCHAR(255),
+  author_id BIGINT NOT NULL,
+  form_art_id BIGINT NOT NULL,
+  material_id BIGINT NOT NULL,
+  biography VARCHAR(255) NULL,
+PRIMARY KEY (id),
+FOREIGN KEY (author_id) REFERENCES author(id),
+FOREIGN KEY (form_art_id) REFERENCES  form_art(id),
+FOREIGN KEY (material_id) REFERENCES material(id));
+
+CREATE TABLE IF NOT EXISTS size (
+  width INT DEFAULT 0,
+  length INT DEFAULT 0,
+  height INT DEFAULT 0,
+  weight INT  DEFAULT 0,
+  art_object_id BIGINT NOT NULL,
+  FOREIGN KEY (art_object_id) REFERENCES art_object(id));
+
+CREATE TABLE IF NOT EXISTS image(
+  id BIGINT AUTO_INCREMENT,
+  image_path VARCHAR(255),
+  art_object_id BIGINT,
+  PRIMARY KEY (id),
+  FOREIGN KEY (art_object_id) REFERENCES art_object(id));
+
+CREATE TABLE IF NOT EXISTS form_art(
+  id BIGINT AUTO_INCREMENT,
+  name_form_art VARCHAR(50),
+  description_form_art VARCHAR(255),
+  art_object_id BIGINT,
+  PRIMARY KEY (id),
+  FOREIGN KEY (art_object_id) REFERENCES art_object(id));
+
+CREATE TABLE IF NOT EXISTS work_type(
+  id BIGINT AUTO_INCREMENT,
+  name_work VARCHAR(100),
+  PRIMARY KEY (id));
+
+CREATE TABLE IF NOT EXISTS partner(
+  id BIGINT AUTO_INCREMENT,
+  partner_info VARCHAR(255),
+  work_type_id BIGINT NOT NULL,
+  user_id BIGINT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (work_type_id) REFERENCES work_type(id));
+
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Федор', 'Емельяненко', 'admin@admin.ru', 'admin', 'ADMIN', DEFAULT, '2018-07-17 13:12:59', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Владислав ', 'Одинцов ', 'user@user.ru', 'user', 'USER', DEFAULT, '2018-07-10 09:24:03', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Андрей ', 'Гордеев ', 'user1@user.ru', 'user', 'USER', DEFAULT, '2018-07-10 09:25:04', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Зигмунд ', 'Попов ', 'pop@mail.ru', '1', DEFAULT, DEFAULT, '1983-02-10 00:00:00', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Степан ', 'Николаев ', '@gmail.com', '1', DEFAULT, DEFAULT, '1977-02-13 00:00:00', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Игнатий ', 'Соловьёв ', 'sol@mail.ru', '1', DEFAULT, DEFAULT, '2018-07-10 09:25:41', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Игнатий ', 'Коновалов ', 'kon@gmail.com', '1', DEFAULT, DEFAULT, '1979-10-05 00:00:00', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Всеволод ', 'Макаров ', 'mak@tut.by', '1', DEFAULT, DEFAULT, '2018-07-10 09:26:17', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Роман ', 'Жданов ', 'jdan@mail.ru', '1', DEFAULT, DEFAULT, '1992-09-13 09:26:38', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Герман ', 'Макаров ', 'gil@tut.by', '1', DEFAULT, DEFAULT, '1992-12-10 09:27:03', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Зуфар ', 'Некрасов ', 'neck@gmail.com', '1', DEFAULT, DEFAULT, '1996-09-15 00:00:00', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Павел ', 'Александров ', 'alexandrov@tut.by', '1', DEFAULT, DEFAULT, '1979-10-16 00:00:00', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Дан ', 'Щербаков ', 'cherb@tut.by', '1', DEFAULT, DEFAULT, '1984-09-03 00:00:00', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Еремей ', 'Пахомов ', 'pohomov@gmail.com', '1', DEFAULT, DEFAULT, '1974-10-08 00:00:00', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Илья ', 'Титов ', 'titov@tut.by', '1', DEFAULT, DEFAULT, '1989-06-21 09:27:41', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Анатолий ', 'Никитин ', 'nikita@tut.by', '1', DEFAULT, DEFAULT, '1983-02-10 00:00:00', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Рафаил ', 'Абрамов ', 'abrams@tut.by', '1', DEFAULT, DEFAULT, '1974-11-19 00:00:00', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Феликс ', 'Суворов ', 'win@gmail.com', '1', DEFAULT, DEFAULT, '1975-09-16 00:00:00', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Святослав ', 'Лихачёв ', 'liho@mail.ru', '1', DEFAULT, DEFAULT, '1983-09-08 00:00:00', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Лукиллиан ', 'Соболев ', 'sobolev@gmail.com', '1', DEFAULT, DEFAULT, '1999-11-05 09:28:07', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Евсей ', 'Воробьёв ', 'vorobey@tut.by', '1', DEFAULT, DEFAULT, '2018-07-10 09:29:10', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Зураб ', 'Архипов ', 'arhip@mail.ru', '1', DEFAULT, DEFAULT, '1975-06-24 00:00:00', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Адриан ', 'Никифоров ', 'nik@gmail.com', '1', DEFAULT, DEFAULT, '2018-07-10 09:29:22', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Зигмунд ', 'Сазонов ', 'saz@mail.ru', '1', DEFAULT, DEFAULT, '1990-07-02 00:00:00', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Эдуард ', 'Кулагин ', 'cool@gmail.com', '1', DEFAULT, DEFAULT, '2018-07-10 09:29:35', 'MALE');
+INSERT INTO `gallery`.`users` (first_name, surname,  `email`, `password`, `role`, `status`, `birthday`, `gender`) VALUES ('Борис ', 'Данилов ', 'dani@tut.by', '1', DEFAULT, DEFAULT, '1978-07-10 00:00:00', 'MALE');
+
+INSERT INTO `gallery`.`address` (`country`, `city`, `street`, `house`, `building`, `flat`, `phone`, `postcode`, `user_id`) VALUES ('BY', 'Minsk', 'Zelenaya str.', '32', '2', '43', '+375296548945', '324343', 1);
+INSERT INTO `gallery`.`address` (`country`, `city`, `street`, `house`, `building`, `flat`, `phone`, `postcode`, `user_id`) VALUES ('RU', 'Moscow', 'Pobedi str.', '7', 'NULL', '54', '+375464367853', 'NULL', 11);
+INSERT INTO `gallery`.`address` (`country`, `city`, `street`, `house`, `building`, `flat`, `phone`, `postcode`, `user_id`) VALUES ('RU', 'Piter', 'Kosmonavtov str.', '54', '4', '3', '+375555464633', 'NULL', 18);
+INSERT INTO `gallery`.`address` (`country`, `city`, `street`, `house`, `building`, `flat`, `phone`, `postcode`, `user_id`) VALUES ('BY', 'Slonim', 'Lenina str.', '4', 'NULL', '234', '+375546656355', '232323', 4);
+INSERT INTO `gallery`.`address` (`country`, `city`, `street`, `house`, `building`, `flat`, `phone`, `postcode`, `user_id`) VALUES ('BY', 'Bobruisk', 'Pbediteley str.', '12', 'NULL', '1', '+107433445545', 'NULL', NULL);
+INSERT INTO `gallery`.`address` (`country`, `city`, `street`, `house`, `building`, `flat`, `phone`, `postcode`, `user_id`) VALUES ('RU', 'Moscow', 'Morozova str.', '151', '1', '6', '+375656655435', '343443', 1);
+INSERT INTO `gallery`.`address` (`country`, `city`, `street`, `house`, `building`, `flat`, `phone`, `postcode`, `user_id`) VALUES ('RU', 'Saratov', 'Pbediteley str.', '8', 'NULL', '4', 'NULL', 'NULL', 3);
+INSERT INTO `gallery`.`address` (`country`, `city`, `street`, `house`, `building`, `flat`, `phone`, `postcode`, `user_id`) VALUES ('BY', 'Brest', 'Kosmonavtov str.', '102', '1', '78', '+375654564565', 'NULL', 11);
+INSERT INTO `gallery`.`address` (`country`, `city`, `street`, `house`, `building`, `flat`, `phone`, `postcode`, `user_id`) VALUES ('BY', 'Gomel', 'Lenina str.', '12', '3', '56', 'NULL', '345444', 10);
+
+INSERT INTO `gallery`.work_type (name_work) VALUES ('Фотограф');
+INSERT INTO `gallery`.work_type (name_work) VALUES ('Журналист');
+INSERT INTO `gallery`.work_type (name_work) VALUES ('Критик');
+INSERT INTO `gallery`.work_type (name_work) VALUES ('Сотрудник');
+INSERT INTO `gallery`.work_type (name_work) VALUES ('Искуствовед');
+
+INSERT INTO `gallery`.`partner` (`partner_info`, work_type_id, `user_id`) VALUES ('NULL', 1, 3);
+INSERT INTO `gallery`.`partner` (`partner_info`, work_type_id, `user_id`) VALUES ('magazine art and life', 2, 4);
+INSERT INTO `gallery`.`partner` (`partner_info`, work_type_id, `user_id`) VALUES ('magazine art and life', 2, 19);
+INSERT INTO `gallery`.`partner` (`partner_info`, work_type_id, `user_id`) VALUES ('interiors', 1, 22);
+INSERT INTO `gallery`.`partner` (`partner_info`, work_type_id, `user_id`) VALUES ('NULL', 3, 9);
+INSERT INTO `gallery`.`partner` (`partner_info`, work_type_id, `user_id`) VALUES ('NULL', 4, 6);
+INSERT INTO `gallery`.`partner` (`partner_info`, work_type_id, `user_id`) VALUES ('art design', 3, 7);
+INSERT INTO `gallery`.`partner` (`partner_info`, work_type_id, `user_id`) VALUES ('NULL', 2, 10);
+INSERT INTO `gallery`.`partner` (`partner_info`, work_type_id, `user_id`) VALUES ('studio photo', 4, 18);
+INSERT INTO `gallery`.`partner` (`partner_info`, work_type_id, `user_id`) VALUES ('NULL', 4, 20);
+
+INSERT INTO `gallery`.`author` (`alias`, `user_id`, `contract`, `biography`, `date_contract`) VALUES ('Николаев', 4, '32с', NULL, '2016-09-10 11:25:07');
+INSERT INTO `gallery`.`author` (`alias`, `user_id`, `contract`, `biography`, `date_contract`) VALUES ('Зигмунт Попов', 3, '14-08', NULL, '2016-09-10 11:25:15');
+INSERT INTO `gallery`.`author` (`alias`, `user_id`, `contract`, `biography`, `date_contract`) VALUES ('Никитин', 15, '78с', NULL, '2017-05-12 11:25:26');
+INSERT INTO `gallery`.`author` (`alias`, `user_id`, `contract`, `biography`, `date_contract`) VALUES ('Никифоров', 22, '12с', NULL, '2017-09-14 11:25:36');
+INSERT INTO `gallery`.`author` (`alias`, `user_id`, `contract`, `biography`, `date_contract`) VALUES ('Дан Щербаков', 12, '10с', NULL, '2017-02-22 11:25:46');
+
+INSERT INTO `gallery`.material (ru_name_material, `description_material`) VALUES ('Гипс', 'Исполь');
+INSERT INTO `gallery`.material (ru_name_material, `description_material`) VALUES ('Сталь', 'NULL');
+INSERT INTO `gallery`.material (ru_name_material, `description_material`) VALUES ('Бронза', 'Скульптура, ');
+INSERT INTO `gallery`.material (ru_name_material, `description_material`) VALUES ('Алюминий', 'NULL');
+INSERT INTO `gallery`.material (ru_name_material, `description_material`) VALUES ('Холст', 'NULL');
+INSERT INTO `gallery`.material (ru_name_material, `description_material`) VALUES ('Дерево', 'NULL');
+INSERT INTO `gallery`.material (ru_name_material, `description_material`) VALUES ('Стекло', 'NULL');
+
+INSERT INTO `gallery`.`form_art` (ru_name_form_art, description_form_art) VALUES ('Скульптура', 'NULL');
+INSERT INTO `gallery`.`form_art` (ru_name_form_art, description_form_art) VALUES ('Картина', 'NULL');
+INSERT INTO `gallery`.`form_art` (ru_name_form_art, description_form_art) VALUES ('Арт-объект', 'для улицы');
+INSERT INTO `gallery`.`form_art` (ru_name_form_art, description_form_art) VALUES ('Дизайн', 'для помещений');
+INSERT INTO `gallery`.`form_art` (ru_name_form_art, description_form_art) VALUES ('Фото', 'NULL');
+
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Хитрый', 'на ножке (малахит)', '2017-09-10 12:36:04', 'в галерее', 1, 1, 1);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Рассвет', 'NULL', '2017-05-15 12:36:10', '', 3, 2, 5);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Слон', 'NULL', '2016-09-05 12:36:18', 'NULL', 4, 1, 3);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Зебра', 'NULL', '2007-02-17 12:37:09', 'NULL', 3, 2, 5);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Лошадь', 'NULL', '2011-09-09 12:37:23', 'NULL', 1, 1, 3);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Минск', 'NULL', '2018-12-31 12:39:15', 'NULL', 3, 2, 5);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Люди', 'большое на стену', '2017-07-12 12:39:30', 'NULL', 2, 5, 2);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Былое', 'NULL', '2016-11-10 12:39:37', 'NULL', 4, 1, 3);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Север', 'на ножке (малахит)', '2017-05-10 12:39:44', 'выстака худ. музей', 4, 1, 1);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Жители', 'черно-белое', '2016-10-10 12:39:48', 'NULL', 2, 5, 3);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Собрание', 'черно-белое', '2016-07-10 12:39:55', 'в галерее', 2, 5, 5);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('50:50', 'NULL', '2016-11-10 12:40:01', 'NULL', 1, 1, 3);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Прошлое', 'NULL', '2016-03-10 12:40:08', 'в галерее', 1, 1, 3);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Мгновение', 'NULL', '2017-02-01 12:39:07', 'NULL', 2, 1, 2);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Разное', 'NULL', '2017-11-25 12:38:59', 'NULL', 1, 4, 7);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Минута', 'NULL', '2016-09-05 12:38:49', 'NULL', 5, 1, 3);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Зелёное', 'NULL', '2011-06-29 12:38:23', 'выстака худ. музей', 5, 4, 7);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('30/70', 'NULL', '2010-02-15 12:38:14', 'NULL', 1, 1, 4);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Фильм', 'NULL', '2014-02-07 12:38:06', 'в галерее', 3, 4, 7);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Закат', 'NULL', '2016-08-15 12:37:32', 'NULL', 4, 4, 6);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('На рассвете', 'NULL', '2017-11-30 12:37:42', 'выстака худ. музей', 4, 1, 2);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Грусть', 'NULL', '2014-10-15 12:36:28', 'NULL', 1, 4, 4);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Красно-жёлтое', 'NULL', '2015-10-15 12:36:39', 'в галерее', 3, 2, 5);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Князь', 'на ножке (малахит)', '2017-10-26 12:36:47', 'в галерее', 1, 1, 1);
+INSERT INTO `gallery`.`art_object` (`object_name`, `description_object`, `date_creation`, `object_info`, `author_id`, `form_art_id`, material_id) VALUES ('Лев', 'NULL',  '2017-03-25 12:36:57', 'NULL', 5, 3, 6);
+
+INSERT INTO `gallery`.`size` (`width`, `length`, `height`, `weight`, `art_object_id`) VALUES (400, 800, 800, 20, 1);
+INSERT INTO `gallery`.`size` (`width`, `length`, `height`, `weight`, `art_object_id`) VALUES (600, 600, 600, 15, 24);
+INSERT INTO `gallery`.`size` (`width`, `length`, `height`, `weight`, `art_object_id`) VALUES (200, 400, 600, NULL, 5);
+INSERT INTO `gallery`.`size` (`width`, `length`, `height`, `weight`, `art_object_id`) VALUES (400, 400, 400, NULL, 7);
+INSERT INTO `gallery`.`size` (`width`, `length`, `height`, `weight`, `art_object_id`) VALUES (200, 600, 1450, NULL, 3);
+INSERT INTO `gallery`.`size` (`width`, `length`, `height`, `weight`, `art_object_id`) VALUES (850, 1000, 800, NULL, 8);
+INSERT INTO `gallery`.`size` (`width`, `length`, `height`, `weight`, `art_object_id`) VALUES (600, 1000, 1200, 60, 9);
+INSERT INTO `gallery`.`size` (`width`, `length`, `height`, `weight`, `art_object_id`) VALUES (900, 450, 450, NULL, 23);
+INSERT INTO `gallery`.`size` (`width`, `length`, `height`, `weight`, `art_object_id`) VALUES (340, 340, 340, NULL, 18);
+INSERT INTO `gallery`.`size` (`width`, `length`, `height`, `weight`, `art_object_id`) VALUES (NULL, 400, 400, NULL, 10);
+INSERT INTO `gallery`.`size` (`width`, `length`, `height`, `weight`, `art_object_id`) VALUES (NULL, 500, 500, NULL, 11);
+INSERT INTO `gallery`.`size` (`width`, `length`, `height`, `weight`, `art_object_id`) VALUES (NULL, 400, 1200, NULL, 7);
+INSERT INTO `gallery`.`size` (`width`, `length`, `height`, `weight`, `art_object_id`) VALUES (870, 930, 800, NULL, 12);
+INSERT INTO `gallery`.`size` (`width`, `length`, `height`, `weight`, `art_object_id`) VALUES (500, 300, 300, NULL, 14);
+
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_45234534', 1);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/2_45234534', 2);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/2_45254634', 2);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/2_452343334', 2);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/3_45234534', 3);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/3_4523344534', 3);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_334543', 1);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/10_34235543', 10);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/10_34234543', 10);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/10_34235543', 10);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_342453', 1);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/6_3434543', 6);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_3434433', 6);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/7_34663', 7);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_43554', 1);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34299943', 7);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34244543', 7);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_546546', 1);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 1);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 22);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 14);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 1);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 23);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 12);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/11_34235543', 11);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 10);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 6);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 9);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/11_342335443', 11);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 15);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 15);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 5);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 7);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 8);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 1);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 3);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 7);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 9);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 12);
+INSERT INTO `gallery`.image (image_path, `art_object_id`) VALUES ('D://art_galleryImage/1_34235543', 19);

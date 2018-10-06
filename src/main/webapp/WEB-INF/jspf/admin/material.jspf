@@ -1,0 +1,85 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<div class="col-12">
+    <div class="adm-horizontal-menu">
+        <div class="row admin-jspf-header">
+            <div class="col-xs-4 adm-horizontal-menu-el" id="adm-horizontal-menu-el-name">
+                <h5>Материал</h5>
+            </div>
+        </div>
+    </div>
+    <c:if test="${requestScope.material ne null}">
+        <form action="<c:url value="/gallery?do=admin&get=editor_materials"/>" method="post" class="needs-validation" novalidate>
+            <div class="table-rows-edit-types row align-items-center">
+                <div class="container col-12 ">
+                    <div class="form-group row edit-row">
+                        <label for="ruNameMaterial" class="col-2 col-form-label">Назание на русском</label>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="ruNameMaterial" name="ruNameMaterial" value="${requestScope.material.ruNameMaterial}">
+                        </div>
+                    </div>
+                    <div class="form-group row edit-row">
+                        <label for="enNameMaterial" class="col-2 col-form-label">Назание на английском</label>
+                        <div class="col-8">
+                            <input type="text" class="form-control" id="enNameMaterial" name="enNameMaterial" value="${requestScope.material.enNameMaterial}">
+                        </div>
+                        <input type="hidden" name="id" value="${requestScope.material.id}"/>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row edit-row-btn">
+                <div class="container btn-s-edit-con col-auto">
+                    <c:if test="${requestScope.material.id eq null}">
+                        <button type="submit" name="add" value="add" class="btn btn-outline-success admin-edit-btn">Добавить</button>
+                    </c:if>
+                    <c:if test="${requestScope.material.id ne null}">
+                        <button type="submit" name="update" value="update" class="btn btn-outline-success admin-edit-btn">Сохранить изменения</button>
+                    </c:if>
+                    <c:if test="${requestScope.material.id ne null}">
+                        <button type="submit" name="delete" value="delete" class="btn btn-outline-success admin-edit-btn">Удалить</button>
+                    </c:if>
+                    <a href="<c:url value='/gallery?do=admin&get=materials'/>"  class="btn btn-outline-success admin-edit-btn">Вернуться назад</a>
+                </div>
+            </div>
+        </form>
+    </c:if>
+    <c:if test="${requestScope.materials ne null}">
+    <div class="table-div">
+        <table class="table table-hover">
+            <thead class="thead-default">
+            <tr>
+                <th>ID</th>
+                <th>Материал(ru)</th>
+                <th>Материал(en)</th>
+                <th class="padding-for-button">
+                    <c:if test="${paramValues.get('id') eq null}">
+                    <a href="<c:url value="/gallery?do=admin&get=materials&id=new"/>" class="btn btn-sm btn-outline-secondary for_btn" role="button" aria-pressed="true">Добавить новый</a>
+                    </c:if>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <c:forEach var="material" items="${requestScope.materials}">
+                <tr class="row-table" id="${material.id}">
+                    <th scope="row">${material.id}</th>
+                    <td>${material.ruNameMaterial}</td>
+                    <td>${material.enNameMaterial}</td>
+                    <td  class="padding-for-button">
+                        <button class="btn btn-sm btn-outline-secondary for_btn href_edit_btn" role="button" aria-pressed="true">Редактировать</button>
+                    </td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
+    <%@include file="/WEB-INF/jspf/admin/pages.jspf"%>
+    <script>
+        <%@include file="/WEB-INF/js/admin-row-get-id.js"%>
+    </script>
+    </c:if>
+</div>
+
+
+
+

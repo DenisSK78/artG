@@ -1,0 +1,69 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<div class="col-xs-4 adm-horizontal-menu-el" id="adm-horizontal-menu-el-name">
+    <div class="row justify-content-center align-items-center">
+        <nav aria-label="...">
+            <ul class="pagination">
+                <c:if test="${requestScope.get('sum-for-page') / requestScope.get('amount-for-page')>1}">
+                    <c:if test="${(requestScope.get('page')) > 1}">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    </c:if>
+                    <c:if test="${(requestScope.get('page')) <= 1}">
+                        <li class="page-item disabled">
+                            <a class="page-link" href=""  aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+                    </c:if>
+                    <c:if test="${(requestScope.get('page')-1) eq 0}">
+                        <li class="page-item disabled"><a class="page-link" href="">...</a></li>
+                    </c:if>
+                    <c:if test="${(requestScope.get('page')-1) > 0}">
+                    <li class="page-item"><a class="page-link" href="<c:url value="/gallery?do=admin&get="/>${requestScope.get("fragment")}&page=${requestScope.get('page')-1}">${requestScope.get('page')-1}</a></li>
+                    </c:if>
+                    <li class="page-item active"><a class="page-link active" href="">${requestScope.get('page')}</a></li>
+                    <c:if test="${(requestScope.get('page') % requestScope.get('amount-for-page')) eq 0}">
+                        <c:if test="${(requestScope.get('page')+1) < requestScope.get('sum-for-page')/requestScope.get('amount-for-page')}">
+                            <li class="page-item"><a class="page-link" href="<c:url value="/gallery?do=admin&get="/>${requestScope.get("fragment")}&page=${requestScope.get('page')+1}">${requestScope.get('page')+1}</a></li>
+                        </c:if>
+                    </c:if>
+                    <c:if test="${(requestScope.get('page') % requestScope.get('amount-for-page')) ne 0}">
+                        <c:if test="${requestScope.get('page')+1 < (requestScope.get('sum-for-page') / requestScope.get('amount-for-page'))+1}">
+                            <li class="page-item"><a class="page-link" href="<c:url value="/gallery?do=admin&get="/>${requestScope.get("fragment")}&page=${requestScope.get('page')+1}">${requestScope.get('page')+1}</a></li>
+                        </c:if>
+                    </c:if>
+                    <c:if test="${requestScope.get('page') - requestScope.get('sum-for-page') / requestScope.get('amount-for-page') > 0}">
+                        <c:if test="${requestScope.get('page') - requestScope.get('sum-for-page') / requestScope.get('amount-for-page') < 1}">
+                        <li class="page-item disabled"><a class="page-link" href="">...</a></li>
+                        </c:if>
+                    </c:if>
+                    <c:if test="${requestScope.get('page') - requestScope.get('sum-for-page') / requestScope.get('amount-for-page') >= 0}">
+                        <c:if test="${requestScope.get('page') - requestScope.get('sum-for-page') / requestScope.get('amount-for-page') < 1}">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                    <span class="sr-only">Next</span>
+                                </a>
+                            </li>
+                        </c:if>
+                    </c:if>
+                    <c:if test="${requestScope.get('page') - requestScope.get('sum-for-page') / requestScope.get('amount-for-page') < 0}">
+                        <li class="page-item">
+                            <a class="page-link" href="" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </c:if>
+                </c:if>
+            </ul>
+        </nav>
+    </div>
+</div>

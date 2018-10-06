@@ -1,0 +1,97 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<div class="col-12">
+    <div class="adm-horizontal-menu">
+        <div class="row admin-jspf-header">
+            <div class="col-xs-4 adm-horizontal-menu-el" id="adm-horizontal-menu-el-name">
+                <h5>Партнёры</h5>
+            </div>
+        </div>
+    </div>
+    <c:if test="${requestScope.partner ne null}">
+        <jsp:useBean id="partner" scope="request" type="by.art.gallery.service.entity.PartnerView"/>
+    <form action="<c:url value="/gallery?do=admin&get=editor_partners"/>" method="post" class="needs-validation" novalidate>
+        <div class="form-group row" style="margin-bottom: 0">
+            <div class="card bg-light mb-3 admin-card">
+                <div class="card-header"></div>
+                <div class="card-body">
+                    <h5 class="card-title">Данные пользователя</h5>
+                    <ul>
+                        <li><a>ID пользоателя: </a><a> ${partner.userView.id}</a></li>
+                        <li><a>ФИО:</a><a> ${partner.userView.firstName} ${partner.userView.surname}</a></li>
+                        <li><a>E-mail:</a><a> ${partner.userView.email}</a></li>
+                        <li><a>Дата рождения:</a><a> <fmt:formatDate value="${partner.userView.dateBirthday}" pattern="dd.MM.yy" /></a></li>
+                    </ul>
+                    <a href="<c:url value='/gallery?do=admin&get=authors&id=${partner.userView.id}'/>" class="btn btn-sm btn-outline-secondary">Редактировать</a>
+                </div>
+            </div>
+            <div class="edit-entity-form">
+                <div class="form-group row edit-row">
+                    <label for="subcontractors" class="col-3 col-form-label">Занятие</label>
+                    <div class="col-8">
+                        <select class="custom-select" id="subcontractors">
+                            <c:forEach var="subcontractor" items="${requestScope.subcontractors}">
+                                <c:if test="${subcontractor.id eq partner.subcontractor.id}">
+                                    <option value="${subcontractor.id}" selected>${subcontractor.occupation}</option>
+                                </c:if>
+                                <c:if test="${subcontractor.id != partner.subcontractor.id}">
+                                    <option value="${subcontractor.id}">${subcontractor.occupation}</option>
+                                </c:if>
+                            </c:forEach>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="id" value="${artObject.id}"/>
+        </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Информация</span>
+            </div>
+            <textarea class="form-control" aria-label="With textarea" style="max-width: 760px">${partner.partnerInfo}</textarea>
+        </div>
+        <div class="form-group row edit-row" style="left: 20px">
+            <button type="submit" name="update" value="update" class="btn btn-outline-success admin-edit-btn">Сохранить изменения</button>
+            <button type="submit" name="delete" value="delete" class="btn btn-outline-success admin-edit-btn">Удалить</button>
+            <a href="<c:url value='/gallery?do=admin&get=partners'/>"  class="btn btn-outline-success admin-edit-btn">Вернутся в партнёры</a>
+        </div>
+    </form>
+    </c:if>
+    <c:if test="${requestScope.partners ne null}">
+        <div class="table-div">
+            <table class="table table-hover">
+                <thead class="thead-default">
+                <tr>
+                    <th>ID</th>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th>ID Пользователя</th>
+                    <th>Информация</th>
+                    <th>Tип</th>
+                    <th> </th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="partner" items="${requestScope.partners}">
+                    <tr class="row-table" id="${partner.id}">
+                        <th scope="row">${partner.id}</th>
+                        <td>${partner.userView.firstName}</td>
+                        <td>${partner.userView.surname}</td>
+                        <td>${partner.userView.id}</td>
+                        <td>${partner.partnerInfo}</td>
+                        <td>${partner.subcontractor.occupation}</td>
+                        <td  class="padding-for-button">
+                            <button class="btn btn-sm btn-outline-secondary for_btn href_edit_btn" role="button" aria-pressed="true">Редактировать</button>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+        <%@include file="/WEB-INF/jspf/admin/pages.jspf"%>
+        <script>
+            <%@include file="/WEB-INF/js/admin-row-get-id.js"%>
+        </script>
+    </c:if>
+</div>

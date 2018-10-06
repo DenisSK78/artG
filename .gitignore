@@ -1,0 +1,11 @@
+target/
+out/
+build/reports/tests
+
+### IntelliJ IDEA ###
+.idea_modules/
+.idea
+*.iws
+*.iml
+*.ipr
+*.log

@@ -1,0 +1,99 @@
+
+#but_lang{
+    margin-left: 5px;
+}
+
+.but_login_sign_in{
+    width: 160px;
+    margin: 5px;
+}
+
+.but_from_reg{
+    width: 160px;
+    margin: 5px;
+}
+
+
+.form-row-m{
+    width: 50%;
+    margin: auto auto 10px;
+}
+
+.but_reg{
+    width: 160px;
+}
+
+.but_rules{
+    margin-top: 4px;
+}
+
+#admin-main-div{
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.adm-vertical-menu{
+    min-width: 140px;
+}
+
+.adm-horizontal-menu{
+    border-top: 1px solid rgba(0,0,0,.125);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    height: 50px;
+    padding: 5px 5px 5px 20px;
+}
+
+.adm-horizontal-menu-el{
+    margin-right: 5px;
+}
+
+#adm-horizontal-menu-el-name{
+    margin-right: 50px;
+}
+
+.admin-jspf-header{
+    margin-bottom: 25px;
+}
+
+.table .padding-for-button{
+    padding: 6px;
+}
+
+.table-div{
+    height: 540px;
+}
+
+.edit-row{
+    margin-top: 10px;
+}
+
+.table-rows-edit-types{
+    height: 285px;
+}
+
+.admin-edit-btn{
+    width: 200px;
+    margin: 5px;
+}
+
+.btn-s-edit-con {
+    min-width: 572px;
+}
+
+.edit-entity-form{
+    width: 525px;
+    float: left;
+    padding: 20px 5px 5px;
+    margin: 10px
+}
+
+tr{
+    font-size: 0.95rem;
+}
+
+.admin-card{
+    width: 250px;
+    margin: 10px;
+    font-size: 0.9rem;
+}

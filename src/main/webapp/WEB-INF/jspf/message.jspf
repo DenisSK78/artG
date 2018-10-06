@@ -1,0 +1,39 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<html>
+<div class="container bg-light">
+<c:if test="${sessionScope.get('message') eq 'not_found'}" >
+    <div class="alert alert-info" id="header-alert"><fmt:message key="message.user.not_found"/>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true" id="msg-header-btn">&times;</button>
+    </div>
+</c:if>
+<c:if test="${sessionScope.get('message') eq 'success'}" >
+    <div class="alert alert-success" id="header-alert"><fmt:message key="message.registration.success"/>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true" id="msg-header-btn">&times;</button>
+    </div>
+</c:if>
+<c:if test="${sessionScope.get('message') eq 'email_exist'}" >
+    <div class="alert alert-info" id="header-alert"><fmt:message key="message.registration.email_exist"/>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true" id="msg-header-btn">&times;</button>
+    </div>
+</c:if>
+<c:if test="${sessionScope.get('message') eq 'bad_date'}" >
+    <div class="alert alert-danger" id="header-alert"><fmt:message key="message.registration.bad_date"/>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true" id="msg-header-btn">&times;</button>
+    </div>
+</c:if>
+</div>
+<script>
+    $(function(){
+        $('#msg-header-btn').click(function () {
+            $('#header-alert').alert('close');
+            $.ajax({
+                url: '/gallery?do=message_off',
+                method: 'POST'
+            })
+        });
+    })
+</script>
+</html>
